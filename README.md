@@ -114,7 +114,3 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 - Add AWS Lambda function code.
 - Set up AWS Amplify for deployment.
 - Implement additional features and improvements.
-
-```
-
-This README.md file provides an overview of the project, its structure, installation steps, and usage instructions. Adjust the repository URL and any other details as needed.
