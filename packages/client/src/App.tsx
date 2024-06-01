@@ -10,11 +10,11 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <h1>Countdown Timer</h1>
+      <h1>Alert Activation Panel</h1>
       {isConnected ? (
         <Countdown />
       ) : (
-        <button onClick={handleConnect}>Connect to Server</button>
+        <button onClick={handleConnect}>Arm System</button>
       )}
     </div>
   );
