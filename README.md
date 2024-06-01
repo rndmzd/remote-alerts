@@ -1,6 +1,3 @@
-Here's the updated README.md for the project, now named "remote-alerts":
-
-```markdown
 # remote-alerts
 
 `remote-alerts` is a project that consists of a server-side Node.js application with Socket.IO and Express.js, a client-side React application, and an AWS Lambda function (to be added later). The server establishes connections with clients, handles countdown timer commands, and broadcasts the remaining time to all connected clients.
@@ -117,7 +114,3 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 - Add AWS Lambda function code.
 - Set up AWS Amplify for deployment.
 - Implement additional features and improvements.
-
-```
-
-This README.md file provides an overview of the project, its structure, installation steps, and usage instructions. Adjust the repository URL and any other details as needed.
