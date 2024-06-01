@@ -1,10 +1,19 @@
-// src/countdownTimer.ts
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 
-export function startCountdown(io: Server, duration: number) {
+interface CountdownControl {
+  stop: () => void;
+}
+
+export function startCountdown(io: Server, duration: number): CountdownControl {
   let remainingTime = duration;
+  let intervalId: NodeJS.Timeout;
 
-  const intervalId = setInterval(() => {
+  const stop = () => {
+    clearInterval(intervalId);
+    io.emit('countdown-reset');
+  };
+
+  intervalId = setInterval(() => {
     if (remainingTime <= 0) {
       clearInterval(intervalId);
       io.emit('countdown-finished');
@@ -13,4 +22,6 @@ export function startCountdown(io: Server, duration: number) {
       io.emit('countdown-update', remainingTime);
     }
   }, 1000);
+
+  return { stop };
 }
