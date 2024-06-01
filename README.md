@@ -1,4 +1,3 @@
-```markdown
 # remote-alerts
 
 `remote-alerts` is a project that consists of a server-side Node.js application with Socket.IO and Express.js, a client-side React application, and an AWS Lambda function (to be added later). The server establishes connections with clients, handles countdown timer commands, and broadcasts the remaining time to all connected clients.
