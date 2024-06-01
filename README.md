@@ -1,5 +1,3 @@
-Here's the updated README.md for the project, now named "remote-alerts":
-
 ```markdown
 # remote-alerts
 
