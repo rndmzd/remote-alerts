@@ -16,9 +16,14 @@ const Countdown: React.FC = () => {
       alert('Countdown finished!');
     });
 
+    socket.on('countdown-reset', () => {
+      setTimeRemaining(null);
+    });
+
     return () => {
       socket.off('countdown-update');
       socket.off('countdown-finished');
+      socket.off('countdown-reset');
     };
   }, []);
 
@@ -27,10 +32,17 @@ const Countdown: React.FC = () => {
     socket.emit('start-countdown', duration);
   };
 
+  const stopCountdown = () => {
+    socket.emit('stop-countdown');
+  };
+
   return (
     <div className="Countdown">
       {timeRemaining !== null ? (
-        <div>Time Remaining: {timeRemaining} seconds</div>
+        <>
+          <div>Time Remaining: {timeRemaining} seconds</div>
+          <button onClick={stopCountdown}>Stop Countdown</button>
+        </>
       ) : (
         <button onClick={startCountdown}>Start Countdown</button>
       )}
