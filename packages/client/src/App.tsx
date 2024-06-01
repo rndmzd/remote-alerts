@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import Countdown from './Countdown';
+import React, { useState } from "react";
+import { Container, Typography, Button, Box } from "@mui/material";
+import Countdown from "./Countdown";
 
 const App: React.FC = () => {
   const [isConnected, setIsConnected] = useState(false);
@@ -9,14 +10,20 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="App">
-      <h1>Alert Activation Panel</h1>
-      {isConnected ? (
-        <Countdown />
-      ) : (
-        <button onClick={handleConnect}>Arm System</button>
-      )}
-    </div>
+    <Container maxWidth="sm">
+      <Box textAlign="center" mt={5}>
+        <Typography variant="h4" gutterBottom>
+          Countdown Timer
+        </Typography>
+        {isConnected ? (
+          <Countdown />
+        ) : (
+          <Button variant="contained" color="primary" onClick={handleConnect}>
+            Connect to Server
+          </Button>
+        )}
+      </Box>
+    </Container>
   );
 };
 
