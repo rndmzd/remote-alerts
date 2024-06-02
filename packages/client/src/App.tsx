@@ -1,25 +1,42 @@
-import React, { useState } from "react";
-import { Container, Typography, Button, Box } from "@mui/material";
-import Countdown from "./Countdown";
+import React, { useState } from 'react';
+import { Container, Typography, Button, Box } from '@mui/material';
+import Countdown from './Countdown';
+import { io, Socket } from 'socket.io-client';
 
 const App: React.FC = () => {
   const [isConnected, setIsConnected] = useState(false);
+  const [socket, setSocket] = useState<Socket | null>(null);
 
   const handleConnect = () => {
+    const newSocket = io('http://localhost:3000');
+    setSocket(newSocket);
     setIsConnected(true);
+  };
+
+  const handleDisconnect = () => {
+    if (socket) {
+      socket.disconnect();
+      setSocket(null);
+    }
+    setIsConnected(false);
   };
 
   return (
     <Container maxWidth="sm">
       <Box textAlign="center" mt={5}>
         <Typography variant="h4" gutterBottom>
-          Alert Activation Panel
+          Alert Panel
         </Typography>
         {isConnected ? (
-          <Countdown />
+          <>
+            <Countdown socket={socket} />
+            <Button variant="contained" color="secondary" onClick={handleDisconnect} style={{ marginTop: '10px' }}>
+              Disarm
+            </Button>
+          </>
         ) : (
           <Button variant="contained" color="primary" onClick={handleConnect}>
-            Arm Alert System
+            Arm
           </Button>
         )}
       </Box>
