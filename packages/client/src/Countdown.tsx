@@ -1,40 +1,48 @@
-import React, { useEffect, useState } from "react";
-import io from "socket.io-client";
-import { Button, Typography, Box } from "@mui/material";
+import React, { useEffect, useState } from 'react';
+import { Button, Typography, Box } from '@mui/material';
+import { Socket } from 'socket.io-client';
 
-const socket = io("http://localhost:3000");
+interface CountdownProps {
+  socket: Socket | null;
+}
 
-const Countdown: React.FC = () => {
+const Countdown: React.FC<CountdownProps> = ({ socket }) => {
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
 
   useEffect(() => {
-    socket.on("countdown-update", (time: number) => {
+    if (!socket) return;
+
+    socket.on('countdown-update', (time: number) => {
       setTimeRemaining(time);
     });
 
-    socket.on("countdown-finished", () => {
+    socket.on('countdown-finished', () => {
       setTimeRemaining(null);
-      alert("Alert trigger sent!");
+      alert('Countdown finished!');
     });
 
-    socket.on("countdown-reset", () => {
+    socket.on('countdown-reset', () => {
       setTimeRemaining(null);
     });
 
     return () => {
-      socket.off("countdown-update");
-      socket.off("countdown-finished");
-      socket.off("countdown-reset");
+      socket.off('countdown-update');
+      socket.off('countdown-finished');
+      socket.off('countdown-reset');
     };
-  }, []);
+  }, [socket]);
 
   const startCountdown = () => {
-    const duration = 10; // Countdown timer duration
-    socket.emit("start-countdown", duration);
+    if (socket) {
+      const duration = 10; // Example duration in seconds
+      socket.emit('start-countdown', duration);
+    }
   };
 
   const stopCountdown = () => {
-    socket.emit("stop-countdown");
+    if (socket) {
+      socket.emit('stop-countdown');
+    }
   };
 
   return (
@@ -42,15 +50,15 @@ const Countdown: React.FC = () => {
       {timeRemaining !== null ? (
         <>
           <Typography variant="h5" gutterBottom>
-            Triggering alert in {timeRemaining} seconds.
+            Time Remaining: {timeRemaining} seconds
           </Typography>
           <Button variant="contained" color="secondary" onClick={stopCountdown}>
-            Cancel Alert
+            Stop Countdown
           </Button>
         </>
       ) : (
         <Button variant="contained" color="primary" onClick={startCountdown}>
-          Trigger Alert
+          Start Countdown
         </Button>
       )}
     </Box>
