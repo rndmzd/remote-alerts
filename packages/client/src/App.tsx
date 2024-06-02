@@ -25,7 +25,7 @@ const App: React.FC = () => {
     <Container maxWidth="sm">
       <Box textAlign="center" mt={5}>
         <Typography variant="h4" gutterBottom>
-          Countdown Timer
+          Alert Panel
         </Typography>
         {isConnected ? (
           <>
