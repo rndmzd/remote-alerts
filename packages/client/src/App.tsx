@@ -13,13 +13,13 @@ const App: React.FC = () => {
     <Container maxWidth="sm">
       <Box textAlign="center" mt={5}>
         <Typography variant="h4" gutterBottom>
-          Countdown Timer
+          Alert Activation Panel
         </Typography>
         {isConnected ? (
           <Countdown />
         ) : (
           <Button variant="contained" color="primary" onClick={handleConnect}>
-            Connect to Server
+            Arm Alert System
           </Button>
         )}
       </Box>

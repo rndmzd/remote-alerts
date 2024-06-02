@@ -14,7 +14,7 @@ const Countdown: React.FC = () => {
 
     socket.on("countdown-finished", () => {
       setTimeRemaining(null);
-      alert("Countdown finished!");
+      alert("Alert trigger sent!");
     });
 
     socket.on("countdown-reset", () => {
@@ -29,7 +29,7 @@ const Countdown: React.FC = () => {
   }, []);
 
   const startCountdown = () => {
-    const duration = 10; // Example duration in seconds
+    const duration = 10; // Countdown timer duration
     socket.emit("start-countdown", duration);
   };
 
@@ -42,15 +42,15 @@ const Countdown: React.FC = () => {
       {timeRemaining !== null ? (
         <>
           <Typography variant="h5" gutterBottom>
-            Time Remaining: {timeRemaining} seconds
+            Triggering alert in {timeRemaining} seconds.
           </Typography>
           <Button variant="contained" color="secondary" onClick={stopCountdown}>
-            Stop Countdown
+            Cancel Alert
           </Button>
         </>
       ) : (
         <Button variant="contained" color="primary" onClick={startCountdown}>
-          Start Countdown
+          Trigger Alert
         </Button>
       )}
     </Box>
