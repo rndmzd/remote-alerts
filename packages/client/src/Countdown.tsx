@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Typography, Box } from '@mui/material';
+import { Button, Typography, Box, Grid } from '@mui/material';
 import { Socket } from 'socket.io-client';
 
 interface CountdownProps {
@@ -52,14 +52,34 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
           <Typography variant="h5" gutterBottom>
             Time Remaining: {timeRemaining} seconds
           </Typography>
-          <Button variant="contained" color="secondary" onClick={stopCountdown}>
-            Stop Countdown
-          </Button>
+          <Grid container spacing={1} justifyContent="center">
+            <Grid item xs={12} sx={{ m: 0.5 }}>
+              <Button
+                fullWidth
+                variant="contained"
+                color="secondary"
+                onClick={stopCountdown}
+                sx={{ border: '2px solid black' }}
+              >
+                Stop Countdown
+              </Button>
+            </Grid>
+          </Grid>
         </>
       ) : (
-        <Button variant="contained" color="primary" onClick={startCountdown}>
-          Start Countdown
-        </Button>
+        <Grid container spacing={1} justifyContent="center">
+          <Grid item xs={12} sx={{ m: 0.5 }}>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={startCountdown}
+              sx={{ border: '2px solid black' }}
+            >
+              Start Countdown
+            </Button>
+          </Grid>
+        </Grid>
       )}
     </Box>
   );
