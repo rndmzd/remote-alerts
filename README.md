@@ -86,7 +86,7 @@ The client will start on `http://localhost:4000` and connect to the Socket.IO se
 ## Usage
 
 1. Open the client application in your browser at `http://localhost:4000`.
-2. Click the "Connect to Server" button.
+2. Click the "Arm" button.
 3. Click the "Start Countdown" button to start a 10-second countdown timer.
 4. The server will broadcast the remaining time to all connected clients every second.
 
