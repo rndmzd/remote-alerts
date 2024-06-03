@@ -52,12 +52,22 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
           <Typography variant="h5" gutterBottom>
             Time Remaining: {timeRemaining} seconds
           </Typography>
-          <Button variant="contained" color="secondary" onClick={stopCountdown}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={stopCountdown}
+            sx={{ border: '2px solid black' }}
+          >
             Stop Countdown
           </Button>
         </>
       ) : (
-        <Button variant="contained" color="primary" onClick={startCountdown}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={startCountdown}
+          sx={{ border: '2px solid black' }}
+        >
           Start Countdown
         </Button>
       )}

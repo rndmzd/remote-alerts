@@ -30,12 +30,22 @@ const App: React.FC = () => {
         {isConnected ? (
           <>
             <Countdown socket={socket} />
-            <Button variant="contained" color="secondary" onClick={handleDisconnect} style={{ marginTop: '10px' }}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleDisconnect}
+              sx={{ marginTop: '10px', border: '2px solid black' }}
+            >
               Disarm
             </Button>
           </>
         ) : (
-          <Button variant="contained" color="primary" onClick={handleConnect}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleConnect}
+            sx={{ border: '2px solid black' }}
+          >
             Arm
           </Button>
         )}
