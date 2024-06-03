@@ -23,7 +23,15 @@ const App: React.FC = () => {
 
   return (
     <Container maxWidth="sm">
-      <Box textAlign="center" mt={5}>
+      <Box
+        textAlign="center"
+        mt={5}
+        p={3}
+        sx={{
+          border: '2px solid black',
+          borderRadius: '8px',
+        }}
+      >
         <Typography variant="h4" gutterBottom>
           Alert Panel
         </Typography>
