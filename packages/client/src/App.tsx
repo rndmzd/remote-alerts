@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Typography, Button, Box } from '@mui/material';
+import { Container, Typography, Button, Box, Grid } from '@mui/material';
 import Countdown from './Countdown';
 import { io, Socket } from 'socket.io-client';
 
@@ -38,24 +38,34 @@ const App: React.FC = () => {
         {isConnected ? (
           <>
             <Countdown socket={socket} />
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleDisconnect}
-              sx={{ marginTop: '10px', border: '2px solid black' }}
-            >
-              Disarm
-            </Button>
+            <Grid container spacing={1} justifyContent="center">
+              <Grid item xs={12} sx={{ m: 0.5 }}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleDisconnect}
+                  sx={{ border: '2px solid black' }}
+                >
+                  Disarm
+                </Button>
+              </Grid>
+            </Grid>
           </>
         ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleConnect}
-            sx={{ border: '2px solid black' }}
-          >
-            Arm
-          </Button>
+          <Grid container spacing={1} justifyContent="center">
+            <Grid item xs={12} sx={{ m: 0.5 }}>
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={handleConnect}
+                sx={{ border: '2px solid black' }}
+              >
+                Arm
+              </Button>
+            </Grid>
+          </Grid>
         )}
       </Box>
     </Container>
