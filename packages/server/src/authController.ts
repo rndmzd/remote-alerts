@@ -1,8 +1,7 @@
-// src/authController.ts
-import { Request, Response } from "express";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { body, validationResult } from "express-validator";
+import { Request, Response } from 'express';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { body, validationResult } from 'express-validator';
 
 const users: { [key: string]: string } = {}; // In-memory user storage for simplicity
 
