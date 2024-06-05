@@ -1,13 +1,13 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
-import express from 'express';
-import http from 'http';
-import { Server } from 'socket.io';
-import cors from 'cors';
-import { startCountdown } from './countdownTimer';
-import { register, login } from './authController'; // Ensure you have this import
-import jwt from 'jsonwebtoken'; 
+import express from "express";
+import http from "http";
+import { Server } from "socket.io";
+import cors from "cors";
+import { startCountdown } from "./countdownTimer";
+import { register, login } from "./authController"; // Ensure you have this import
+import jwt from "jsonwebtoken";
 
 const app = express();
 const server = http.createServer(app);
@@ -36,22 +36,22 @@ io.use((socket, next) => {
     (socket as any).user = decoded;
     next();
   } catch (err) {
-    next(new Error("Authentication error"));
+    next(new Error("Authentication error."));
   }
 });
 
 let countdownControl: ReturnType<typeof startCountdown> | null = null;
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
+  console.log("User connected.");
 
   socket.on("start-countdown", (duration: number) => {
-    console.log(`Starting countdown for ${duration} seconds`);
+    console.log(`Starting countdown for ${duration} seconds.`);
     countdownControl = startCountdown(io, duration);
   });
 
   socket.on("stop-countdown", () => {
-    console.log("Stopping countdown");
+    console.log("Stopping countdown.");
     if (countdownControl) {
       countdownControl.stop();
       countdownControl = null;
@@ -59,7 +59,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("user disconnected");
+    console.log("User disconnected.");
   });
 });
 
