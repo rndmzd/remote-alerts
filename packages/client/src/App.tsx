@@ -1,19 +1,26 @@
-import React, { useState } from 'react';
-import { Container, Typography, Button, Box, Grid, TextField } from '@mui/material';
-import Countdown from './Countdown';
-import { io, Socket } from 'socket.io-client';
-import { useAuth, AuthProvider } from './authContext';
+import React, { useState } from "react";
+import {
+  Container,
+  Typography,
+  Button,
+  Box,
+  Grid,
+  TextField,
+} from "@mui/material";
+import Countdown from "./Countdown";
+import { io, Socket } from "socket.io-client";
+import { useAuth, AuthProvider } from "./authContext";
 
 const App: React.FC = () => {
   const { user, token, login, logout } = useAuth();
   const [isConnected, setIsConnected] = useState(false);
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleConnect = () => {
     if (!token) return;
-    const newSocket = io('http://localhost:3000', {
+    const newSocket = io("http://localhost:3000", {
       auth: { token },
     });
     setSocket(newSocket);
@@ -32,13 +39,18 @@ const App: React.FC = () => {
     try {
       await login(username, password);
     } catch (error) {
-      console.error('Login failed', error);
+      console.error("Login failed", error);
     }
   };
 
   return (
     <Container maxWidth="sm">
-      <Box textAlign="center" mt={5} p={3} sx={{ border: '2px solid black', borderRadius: '8px' }}>
+      <Box
+        textAlign="center"
+        mt={5}
+        p={3}
+        sx={{ border: "2px solid black", borderRadius: "8px" }}
+      >
         <Typography variant="h4" gutterBottom>
           Alert Panel
         </Typography>
@@ -54,7 +66,7 @@ const App: React.FC = () => {
                       variant="contained"
                       color="secondary"
                       onClick={handleDisconnect}
-                      sx={{ border: '2px solid black' }}
+                      sx={{ border: "2px solid black" }}
                     >
                       Disarm
                     </Button>
@@ -69,7 +81,7 @@ const App: React.FC = () => {
                     variant="contained"
                     color="primary"
                     onClick={handleConnect}
-                    sx={{ border: '2px solid black' }}
+                    sx={{ border: "2px solid black" }}
                   >
                     Arm
                   </Button>

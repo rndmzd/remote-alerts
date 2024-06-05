@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { body, validationResult } from 'express-validator';
+import { Request, Response } from "express";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { body, validationResult } from "express-validator";
 
 const users: { [key: string]: string } = {}; // In-memory user storage for simplicity
 
@@ -16,13 +16,13 @@ export const register = [
 
     const { username, password } = req.body;
     if (users[username]) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ message: "User already exists." });
     }
 
     const hashedPassword = bcrypt.hashSync(password, 8);
     users[username] = hashedPassword;
 
-    res.status(201).json({ message: "User registered successfully" });
+    res.status(201).json({ message: "User registered successfully." });
   },
 ];
 
@@ -38,10 +38,10 @@ export const login = [
     const { username, password } = req.body;
     const hashedPassword = users[username];
     if (!hashedPassword || !bcrypt.compareSync(password, hashedPassword)) {
-      return res.status(400).json({ message: "Invalid username or password" });
+      return res.status(400).json({ message: "Invalid username or password." });
     }
 
-    const token = jwt.sign({ username }, "your_jwt_secret", {
+    const token = jwt.sign({ username }, process.env.JWT_SECRET as string, {
       expiresIn: "1h",
     });
     res.json({ token });
@@ -51,14 +51,14 @@ export const login = [
 export const authenticate = (req: Request, res: Response, next: () => void) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
   if (!token) {
-    return res.status(401).json({ message: "No token provided" });
+    return res.status(401).json({ message: "No token provided." });
   }
 
   try {
-    const decoded = jwt.verify(token, "your_jwt_secret");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
     (req as any).user = decoded;
     next();
   } catch (err) {
-    res.status(401).json({ message: "Invalid token" });
+    res.status(401).json({ message: "Invalid token." });
   }
 };

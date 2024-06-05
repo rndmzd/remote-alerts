@@ -1,10 +1,13 @@
-import express from 'express';
-import http from 'http';
-import { Server } from 'socket.io';
-import cors from 'cors';
-import { startCountdown } from './countdownTimer';
-import { register, login } from './authController'; // Ensure you have this import
-import jwt from 'jsonwebtoken'; 
+import dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
+import http from "http";
+import { Server } from "socket.io";
+import cors from "cors";
+import { startCountdown } from "./countdownTimer";
+import { register, login } from "./authController"; // Ensure you have this import
+import jwt from "jsonwebtoken";
 
 const app = express();
 const server = http.createServer(app);
@@ -29,26 +32,26 @@ app.post("/api/login", login);
 io.use((socket, next) => {
   const token = socket.handshake.auth.token;
   try {
-    const decoded = jwt.verify(token, "your_jwt_secret");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
     (socket as any).user = decoded;
     next();
   } catch (err) {
-    next(new Error("Authentication error"));
+    next(new Error("Authentication error."));
   }
 });
 
 let countdownControl: ReturnType<typeof startCountdown> | null = null;
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
+  console.log("User connected.");
 
   socket.on("start-countdown", (duration: number) => {
-    console.log(`Starting countdown for ${duration} seconds`);
-    startCountdown(io, duration);
+    console.log(`Starting countdown for ${duration} seconds.`);
+    countdownControl = startCountdown(io, duration);
   });
 
   socket.on("stop-countdown", () => {
-    console.log("Stopping countdown");
+    console.log("Stopping countdown.");
     if (countdownControl) {
       countdownControl.stop();
       countdownControl = null;
@@ -56,7 +59,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("user disconnected");
+    console.log("User disconnected.");
   });
 });
 
