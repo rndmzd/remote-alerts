@@ -47,7 +47,7 @@ io.on("connection", (socket) => {
 
   socket.on("start-countdown", (duration: number) => {
     console.log(`Starting countdown for ${duration} seconds`);
-    startCountdown(io, duration);
+    countdownControl = startCountdown(io, duration);
   });
 
   socket.on("stop-countdown", () => {
