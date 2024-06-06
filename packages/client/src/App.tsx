@@ -54,6 +54,7 @@ const App: React.FC = () => {
     event.preventDefault();
     await register(username, password);
     setIsRegistering(false);
+    setPassword(""); // Clear the password field
   };
 
   return (
@@ -124,17 +125,19 @@ const App: React.FC = () => {
                   margin="normal"
                   autoComplete="new-password"
                 />
-                {error && (
-                  <Typography color="error" variant="body2">
-                    {error}
-                  </Typography>
-                )}
                 <Grid
                   container
                   spacing={2}
                   direction="column"
                   alignItems="center"
                 >
+                  <Grid item xs={12}>
+                    {error && (
+                      <Typography color="error" variant="body2">
+                        {error}
+                      </Typography>
+                    )}
+                  </Grid>
                   <Grid item xs={12}>
                     <Button type="submit" variant="contained" color="primary">
                       Register
@@ -171,16 +174,6 @@ const App: React.FC = () => {
                   margin="normal"
                   autoComplete="current-password"
                 />
-                {error && (
-                  <Typography color="error" variant="body2">
-                    {error}
-                  </Typography>
-                )}
-                {successMessage && (
-                  <Typography color="primary" variant="body2">
-                    {successMessage}
-                  </Typography>
-                )}
                 <Grid
                   container
                   spacing={2}
@@ -188,12 +181,29 @@ const App: React.FC = () => {
                   alignItems="center"
                 >
                   <Grid item xs={12}>
+                    {error && (
+                      <Typography color="error" variant="body2">
+                        {error}
+                      </Typography>
+                    )}
+                    {successMessage && (
+                      <Typography color="primary" variant="body2">
+                        {successMessage}
+                      </Typography>
+                    )}
+                  </Grid>
+                  <Grid item xs={12}>
                     <Button type="submit" variant="contained" color="primary">
                       Login
                     </Button>
                   </Grid>
                   <Grid item xs={12}>
-                    <Button onClick={() => setIsRegistering(true)}>
+                    <Button
+                      onClick={() => {
+                        setIsRegistering(true);
+                        clearMessages();
+                      }}
+                    >
                       Don't have an account? Register
                     </Button>
                   </Grid>
