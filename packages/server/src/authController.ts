@@ -69,7 +69,7 @@ export const authenticate = (req: Request, res: Response, next: () => void) => {
   }
 
   try {
-    const decoded = jwt.verify(token, "your_jwt_secret");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
     (req as any).user = decoded;
     next();
   } catch (err) {

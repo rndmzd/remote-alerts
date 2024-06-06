@@ -34,7 +34,7 @@ app.post("/api/login", login);
 io.use((socket, next) => {
   const token = socket.handshake.auth.token;
   try {
-    const decoded = jwt.verify(token, "your_jwt_secret");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
     (socket as any).user = decoded;
     next();
   } catch (err) {
