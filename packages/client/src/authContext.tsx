@@ -7,6 +7,7 @@ interface AuthContextType {
   error: string | null;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
+  register: (username: string, password: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -32,13 +33,27 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  const register = async (username: string, password: string) => {
+    try {
+      await axios.post("http://localhost:3000/api/register", {
+        username,
+        password,
+      });
+      setError(null); // Clear any previous errors on successful registration
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Registration failed");
+    }
+  };
+
   const logout = () => {
     setUser(null);
     setToken(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, error, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, token, error, login, logout, register }}
+    >
       {children}
     </AuthContext.Provider>
   );

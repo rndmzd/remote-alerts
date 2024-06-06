@@ -10,6 +10,7 @@ import {
 import Countdown from "./Countdown";
 import { io, Socket } from "socket.io-client";
 import { useAuth, AuthProvider } from "./authContext";
+import RegisterForm from "./RegisterForm";
 
 const App: React.FC = () => {
   const { user, token, login, logout, error } = useAuth();
@@ -17,6 +18,7 @@ const App: React.FC = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isRegistering, setIsRegistering] = useState(false);
 
   const handleConnect = () => {
     if (!token) return;
@@ -88,33 +90,47 @@ const App: React.FC = () => {
             <Button onClick={logout}>Logout</Button>
           </>
         ) : (
-          <Box component="form" onSubmit={handleLogin}>
-            <TextField
-              label="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              fullWidth
-              margin="normal"
-              autoComplete="username"
-            />
-            <TextField
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              fullWidth
-              margin="normal"
-              autoComplete="current-password"
-            />
-            {error && (
-              <Typography color="error" variant="body2">
-                {error}
-              </Typography>
+          <>
+            {isRegistering ? (
+              <>
+                <RegisterForm />
+                <Button onClick={() => setIsRegistering(false)}>
+                  Already have an account? Login
+                </Button>
+              </>
+            ) : (
+              <Box component="form" onSubmit={handleLogin}>
+                <TextField
+                  label="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  fullWidth
+                  margin="normal"
+                  autoComplete="username"
+                />
+                <TextField
+                  label="Password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  fullWidth
+                  margin="normal"
+                  autoComplete="current-password"
+                />
+                {error && (
+                  <Typography color="error" variant="body2">
+                    {error}
+                  </Typography>
+                )}
+                <Button type="submit" variant="contained" color="primary">
+                  Login
+                </Button>
+                <Button onClick={() => setIsRegistering(true)}>
+                  Don't have an account? Register
+                </Button>
+              </Box>
             )}
-            <Button type="submit" variant="contained" color="primary">
-              Login
-            </Button>
-          </Box>
+          </>
         )}
       </Box>
     </Container>
