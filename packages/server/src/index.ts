@@ -1,10 +1,15 @@
-import express from 'express';
-import http from 'http';
-import { Server } from 'socket.io';
-import cors from 'cors';
-import { startCountdown } from './countdownTimer';
-import { register, login } from './authController'; // Ensure you have this import
-import jwt from 'jsonwebtoken'; 
+import dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
+import http from "http";
+import { Server } from "socket.io";
+import cors from "cors";
+import { startCountdown } from "./countdownTimer";
+import { register, login } from "./authController"; // Ensure you have this import
+import jwt from "jsonwebtoken";
+import sequelize from './db';
+import User from './models/user';
 
 const app = express();
 const server = http.createServer(app);
@@ -63,4 +68,10 @@ io.on("connection", (socket) => {
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
+});
+
+sequelize.sync().then(() => {
+  server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
 });
