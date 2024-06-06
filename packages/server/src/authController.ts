@@ -38,7 +38,7 @@ export const login = [
     const { username, password } = req.body;
     const hashedPassword = users[username];
     if (!hashedPassword || !bcrypt.compareSync(password, hashedPassword)) {
-      return res.status(400).json({ message: "Invalid username or password." });
+      return res.status(401).json({ message: "Invalid username or password." });
     }
 
     const token = jwt.sign({ username }, process.env.JWT_SECRET as string, {
