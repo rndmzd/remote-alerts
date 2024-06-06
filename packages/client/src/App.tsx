@@ -35,7 +35,8 @@ const App: React.FC = () => {
     setIsConnected(false);
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (event: React.FormEvent) => {
+    event.preventDefault();
     await login(username, password);
   };
 
@@ -87,7 +88,7 @@ const App: React.FC = () => {
             <Button onClick={logout}>Logout</Button>
           </>
         ) : (
-          <Box>
+          <Box component="form" onSubmit={handleLogin}>
             <TextField
               label="Username"
               value={username}
@@ -108,7 +109,7 @@ const App: React.FC = () => {
                 {error}
               </Typography>
             )}
-            <Button onClick={handleLogin} variant="contained" color="primary">
+            <Button type="submit" variant="contained" color="primary">
               Login
             </Button>
           </Box>
