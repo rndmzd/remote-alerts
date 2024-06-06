@@ -38,22 +38,22 @@ io.use((socket, next) => {
     (socket as any).user = decoded;
     next();
   } catch (err) {
-    next(new Error("Authentication error"));
+    next(new Error("Authentication error."));
   }
 });
 
 let countdownControl: ReturnType<typeof startCountdown> | null = null;
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
+  console.log("User connected.");
 
   socket.on("start-countdown", (duration: number) => {
-    console.log(`Starting countdown for ${duration} seconds`);
-    startCountdown(io, duration);
+    console.log(`Starting countdown for ${duration} seconds.`);
+    countdownControl = startCountdown(io, duration);
   });
 
   socket.on("stop-countdown", () => {
-    console.log("Stopping countdown");
+    console.log("Stopping countdown.");
     if (countdownControl) {
       countdownControl.stop();
       countdownControl = null;
@@ -61,7 +61,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("user disconnected");
+    console.log("User disconnected.");
   });
 });
 
