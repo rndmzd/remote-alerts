@@ -125,17 +125,19 @@ const App: React.FC = () => {
                   margin="normal"
                   autoComplete="new-password"
                 />
-                {error && (
-                  <Typography color="error" variant="body2">
-                    {error}
-                  </Typography>
-                )}
                 <Grid
                   container
                   spacing={2}
                   direction="column"
                   alignItems="center"
                 >
+                  <Grid item xs={12}>
+                    {error && (
+                      <Typography color="error" variant="body2">
+                        {error}
+                      </Typography>
+                    )}
+                  </Grid>
                   <Grid item xs={12}>
                     <Button type="submit" variant="contained" color="primary">
                       Register
@@ -172,22 +174,24 @@ const App: React.FC = () => {
                   margin="normal"
                   autoComplete="current-password"
                 />
-                {error && (
-                  <Typography color="error" variant="body2">
-                    {error}
-                  </Typography>
-                )}
-                {successMessage && (
-                  <Typography color="primary" variant="body2">
-                    {successMessage}
-                  </Typography>
-                )}
                 <Grid
                   container
                   spacing={2}
                   direction="column"
                   alignItems="center"
                 >
+                  <Grid item xs={12}>
+                    {error && (
+                      <Typography color="error" variant="body2">
+                        {error}
+                      </Typography>
+                    )}
+                    {successMessage && (
+                      <Typography color="primary" variant="body2">
+                        {successMessage}
+                      </Typography>
+                    )}
+                  </Grid>
                   <Grid item xs={12}>
                     <Button type="submit" variant="contained" color="primary">
                       Login
