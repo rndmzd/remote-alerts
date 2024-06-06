@@ -12,7 +12,7 @@ import { io, Socket } from "socket.io-client";
 import { useAuth, AuthProvider } from "./authContext";
 
 const App: React.FC = () => {
-  const { user, token, login, logout } = useAuth();
+  const { user, token, login, logout, error } = useAuth();
   const [isConnected, setIsConnected] = useState(false);
   const [socket, setSocket] = useState<Socket | null>(null);
   const [username, setUsername] = useState("");
@@ -35,12 +35,9 @@ const App: React.FC = () => {
     setIsConnected(false);
   };
 
-  const handleLogin = async () => {
-    try {
-      await login(username, password);
-    } catch (error) {
-      console.error("Login failed", error);
-    }
+  const handleLogin = async (event: React.FormEvent) => {
+    event.preventDefault();
+    await login(username, password);
   };
 
   return (
@@ -91,13 +88,14 @@ const App: React.FC = () => {
             <Button onClick={logout}>Logout</Button>
           </>
         ) : (
-          <Box>
+          <Box component="form" onSubmit={handleLogin}>
             <TextField
               label="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               fullWidth
               margin="normal"
+              autoComplete="username"
             />
             <TextField
               label="Password"
@@ -106,8 +104,14 @@ const App: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               fullWidth
               margin="normal"
+              autoComplete="current-password"
             />
-            <Button onClick={handleLogin} variant="contained" color="primary">
+            {error && (
+              <Typography color="error" variant="body2">
+                {error}
+              </Typography>
+            )}
+            <Button type="submit" variant="contained" color="primary">
               Login
             </Button>
           </Box>
