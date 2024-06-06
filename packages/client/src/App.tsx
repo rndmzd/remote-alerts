@@ -54,6 +54,7 @@ const App: React.FC = () => {
     event.preventDefault();
     await register(username, password);
     setIsRegistering(false);
+    setPassword(""); // Clear the password field
   };
 
   return (
@@ -193,7 +194,12 @@ const App: React.FC = () => {
                     </Button>
                   </Grid>
                   <Grid item xs={12}>
-                    <Button onClick={() => setIsRegistering(true)}>
+                    <Button
+                      onClick={() => {
+                        setIsRegistering(true);
+                        clearMessages();
+                      }}
+                    >
                       Don't have an account? Register
                     </Button>
                   </Grid>
