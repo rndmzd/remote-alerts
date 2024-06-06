@@ -95,6 +95,7 @@ const App: React.FC = () => {
               onChange={(e) => setUsername(e.target.value)}
               fullWidth
               margin="normal"
+              autoComplete="username"
             />
             <TextField
               label="Password"
@@ -103,6 +104,7 @@ const App: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               fullWidth
               margin="normal"
+              autoComplete="current-password"
             />
             {error && (
               <Typography color="error" variant="body2">
