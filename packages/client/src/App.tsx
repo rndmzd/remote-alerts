@@ -12,7 +12,7 @@ import { io, Socket } from "socket.io-client";
 import { useAuth, AuthProvider } from "./authContext";
 
 const App: React.FC = () => {
-  const { user, token, login, logout } = useAuth();
+  const { user, token, login, logout, error } = useAuth();
   const [isConnected, setIsConnected] = useState(false);
   const [socket, setSocket] = useState<Socket | null>(null);
   const [username, setUsername] = useState("");
@@ -36,11 +36,7 @@ const App: React.FC = () => {
   };
 
   const handleLogin = async () => {
-    try {
-      await login(username, password);
-    } catch (error) {
-      console.error("Login failed", error);
-    }
+    await login(username, password);
   };
 
   return (
@@ -107,6 +103,11 @@ const App: React.FC = () => {
               fullWidth
               margin="normal"
             />
+            {error && (
+              <Typography color="error" variant="body2">
+                {error}
+              </Typography>
+            )}
             <Button onClick={handleLogin} variant="contained" color="primary">
               Login
             </Button>
