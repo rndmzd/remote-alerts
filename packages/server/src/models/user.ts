@@ -1,21 +1,14 @@
+// src/models/user.ts
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../db';
 
-interface UserAttributes {
-  id: number;
-  username: string;
-  password: string;
-}
+class User extends Model {
+  declare id: number;
+  declare username: string;
+  declare password: string;
 
-interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
-
-class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
-  public id!: number;
-  public username!: string;
-  public password!: string;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  declare createdAt: Date;
+  declare updatedAt: Date;
 }
 
 User.init(
@@ -38,6 +31,7 @@ User.init(
   {
     sequelize,
     tableName: 'users',
+    timestamps: true
   }
 );
 
