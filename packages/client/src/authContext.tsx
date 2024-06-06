@@ -5,9 +5,11 @@ interface AuthContextType {
   user: string | null;
   token: string | null;
   error: string | null;
+  successMessage: string | null;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
   register: (username: string, password: string) => Promise<void>;
+  clearMessages: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -18,6 +20,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const [user, setUser] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const login = async (username: string, password: string) => {
     try {
@@ -28,6 +31,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       setUser(username);
       setToken(response.data.token);
       setError(null); // Clear any previous errors on successful login
+      setSuccessMessage(null); // Clear success message on successful login
     } catch (err: any) {
       setError(err.response?.data?.message || "Login failed");
     }
@@ -40,6 +44,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         password,
       });
       setError(null); // Clear any previous errors on successful registration
+      setSuccessMessage("User registered successfully. Please log in.");
     } catch (err: any) {
       setError(err.response?.data?.message || "Registration failed");
     }
@@ -50,9 +55,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     setToken(null);
   };
 
+  const clearMessages = () => {
+    setError(null);
+    setSuccessMessage(null);
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, token, error, login, logout, register }}
+      value={{
+        user,
+        token,
+        error,
+        successMessage,
+        login,
+        logout,
+        register,
+        clearMessages,
+      }}
     >
       {children}
     </AuthContext.Provider>

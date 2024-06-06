@@ -12,7 +12,16 @@ import { io, Socket } from "socket.io-client";
 import { useAuth, AuthProvider } from "./authContext";
 
 const App: React.FC = () => {
-  const { user, token, login, logout, error, register } = useAuth();
+  const {
+    user,
+    token,
+    login,
+    logout,
+    error,
+    successMessage,
+    register,
+    clearMessages,
+  } = useAuth();
   const [isConnected, setIsConnected] = useState(false);
   const [socket, setSocket] = useState<Socket | null>(null);
   const [username, setUsername] = useState("");
@@ -44,6 +53,7 @@ const App: React.FC = () => {
   const handleRegister = async (event: React.FormEvent) => {
     event.preventDefault();
     await register(username, password);
+    setIsRegistering(false);
   };
 
   return (
@@ -131,7 +141,12 @@ const App: React.FC = () => {
                     </Button>
                   </Grid>
                   <Grid item xs={12}>
-                    <Button onClick={() => setIsRegistering(false)}>
+                    <Button
+                      onClick={() => {
+                        setIsRegistering(false);
+                        clearMessages();
+                      }}
+                    >
                       Already have an account? Login
                     </Button>
                   </Grid>
@@ -159,6 +174,11 @@ const App: React.FC = () => {
                 {error && (
                   <Typography color="error" variant="body2">
                     {error}
+                  </Typography>
+                )}
+                {successMessage && (
+                  <Typography color="primary" variant="body2">
+                    {successMessage}
                   </Typography>
                 )}
                 <Grid
