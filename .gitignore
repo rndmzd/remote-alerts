@@ -1,3 +1,4 @@
 **node_modules
 **.env
 **.sqlite
+packages/device/config.h
