@@ -30,7 +30,7 @@ const App: React.FC = () => {
 
   const handleConnect = () => {
     if (!token) return;
-    const newSocket = io("http://localhost:3000", {
+    const newSocket = io(process.env.SOCKETIO_HOST as string, {
       auth: { token },
     });
     setSocket(newSocket);

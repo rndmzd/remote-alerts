@@ -24,10 +24,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   const login = async (username: string, password: string) => {
     try {
-      const response = await axios.post("http://localhost:3000/api/login", {
-        username,
-        password,
-      });
+      const response = await axios.post(
+        process.env.SOCKETIO_HOST + "/api/login",
+        {
+          username,
+          password,
+        }
+      );
       setUser(username);
       setToken(response.data.token);
       setError(null); // Clear any previous errors on successful login
@@ -39,7 +42,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   const register = async (username: string, password: string) => {
     try {
-      await axios.post("http://localhost:3000/api/register", {
+      await axios.post(process.env.SOCKETIO_HOST + "/api/register", {
         username,
         password,
       });
