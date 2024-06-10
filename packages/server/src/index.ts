@@ -8,14 +8,14 @@ import cors from "cors";
 import { startCountdown } from "./countdownTimer";
 import { register, login } from "./authController"; // Ensure you have this import
 import jwt from "jsonwebtoken";
-import sequelize from './db';
-import User from './models/user';
+import sequelize from "./db";
+import User from "./models/user";
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:4000",
+    origin: process.env.CORS_ORIGIN as string,
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
   },
@@ -23,7 +23,7 @@ const io = new Server(server, {
 
 app.use(
   cors({
-    origin: "http://localhost:4000",
+    origin: process.env.CORS_ORIGIN as string,
   })
 );
 app.use(express.json());
