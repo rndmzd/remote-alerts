@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Typography, Box, Grid } from "@mui/material";
 import { Socket } from "socket.io-client";
 import axios from "axios";
+import { URLSearchParams } from "url";
 
 interface CountdownProps {
   socket: Socket | null;
@@ -22,7 +23,7 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
       alert("Alert triggered!");
 
       axios
-        .get(process.env.DEVICE_URL as string + "/alert", {
+        .get((process.env.DEVICE_URL as string) + "/alert", {
           auth: {
             username: process.env.NGROK_USERNAME as string,
             password: process.env.NGROK_PASSWORD as string,
@@ -57,6 +58,29 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
   const stopCountdown = () => {
     if (socket) {
       socket.emit("stop-countdown");
+    }
+  };
+
+  const triggerAlert = async (alertDuration: string) => {
+    try {
+      const username = process.env.NGROK_USERNAME as string;
+      const password = process.env.NGROK_PASSWORD as string;
+
+      const params = new URLSearchParams({ duration: alertDuration });
+
+      const response = await axios.post(
+        (process.env.DEVICE_URL as string) + "/alert",
+        params.toString(),
+        {
+          auth: {
+            username: username,
+            password: password,
+          },
+        }
+      );
+      console.log("Data:", response.data);
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
