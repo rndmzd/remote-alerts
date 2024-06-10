@@ -4,8 +4,6 @@
 
 #define MAX_ALERT_DURATION 10
 
-const int maxAlertDuration = MAX_ALERT_DURATION + 1000;
-
 // Replace with your network credentials
 const char *ssid = WIFI_SSID;
 const char *password = WIFI_PASS;
@@ -60,7 +58,7 @@ void handlePost()
 
 void setup()
 {
-  delay(10000);
+  //delay(10000);
 
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
@@ -94,7 +92,7 @@ void loop()
 
 void triggerAlert(int duration)
 {
-  long durationMs = duration + 1000;
+  long durationMs = duration * 1000;
 
   digitalWrite(switchPin, HIGH);
   digitalWrite(LED_BUILTIN, HIGH);
