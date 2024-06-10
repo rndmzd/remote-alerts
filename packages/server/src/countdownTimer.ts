@@ -1,5 +1,4 @@
 import { Server, Socket } from "socket.io";
-import axios from "axios";
 
 interface CountdownControl {
   stop: () => void;
