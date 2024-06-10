@@ -7,8 +7,8 @@
 const int maxAlertDuration = MAX_ALERT_DURATION + 1000;
 
 // Replace with your network credentials
-const char* ssid = WIFI_SSID;
-const char* password = WIFI_PASS;
+const char *ssid = WIFI_SSID;
+const char *password = WIFI_PASS;
 
 // Set web server port number to 80
 ESP8266WebServer server(8080);
@@ -16,12 +16,27 @@ ESP8266WebServer server(8080);
 // Assign output variables to GPIO pins
 const int switchPin = 2;
 
-void handleRoot() {
+void handleRoot()
+{
   server.send(200, "text/plain", "You have reazched the remote-alerts device.");
 }
 
-void handlePost() {
-  if (server.hasArg("plain") == false) {
+void handlePost()
+{
+  // Handle preflight (OPTIONS) requests
+  if (server.method() == HTTP_OPTIONS)
+  {
+    server.sendHeader("Access-Control-Allow-Origin", "*");
+    server.sendHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    server.sendHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    server.send(204);
+    return;
+  }
+
+  // Handle POST requests
+  if (server.hasArg("plain") == false)
+  {
+    server.sendHeader("Access-Control-Allow-Origin", "*");
     server.send(400, "text/plain", "400: Invalid Request - Body not recieved");
     return;
   }
@@ -29,16 +44,22 @@ void handlePost() {
   String body = server.arg("plain");
   String durationParam = server.arg("duration");
 
+  server.sendHeader("Access-Control-Allow-Origin", "*");
+
   int duration = durationParam.toInt();
-  if (0 < duration < MAX_ALERT_DURATION) {
+  if (0 < duration < MAX_ALERT_DURATION)
+  {
     server.send(200, "text/plain", "Received valid request of of " + durationParam + " seconds.");
     triggerAlert(duration);
-  } else {
+  }
+  else
+  {
     server.send(400, "text/plain", "Invalid request received: " + durationParam);
   }
 }
 
-void setup() {
+void setup()
+{
   delay(10000);
 
   pinMode(LED_BUILTIN, OUTPUT);
@@ -53,22 +74,26 @@ void setup() {
 
   // Connect to Wi-Fi network with SSID and password
   WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
+  while (WiFi.status() != WL_CONNECTED)
+  {
     delay(500);
   }
 
   server.on("/", HTTP_GET, handleRoot);
   server.on("/alert", HTTP_POST, handlePost);
+  server.on("/alert", HTTP_OPTIONS, handlePost);
   server.begin();
 
   digitalWrite(LED_BUILTIN, LOW);
 }
 
-void loop() {
+void loop()
+{
   server.handleClient();
 }
 
-void triggerAlert(int duration) {
+void triggerAlert(int duration)
+{
   long durationMs = duration + 1000;
 
   digitalWrite(switchPin, HIGH);
