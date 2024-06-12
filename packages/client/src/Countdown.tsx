@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Typography, Box, Grid } from "@mui/material";
 import { Socket } from "socket.io-client";
+import { Buffer } from "buffer";
 import axios from "axios";
 
 interface CountdownProps {
@@ -20,7 +21,7 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
     socket.on("countdown-finished", () => {
       setTimeRemaining(null);
       triggerAlert(3);
-      alert("Alert triggered!");
+      //alert("Alert triggered!");
     });
 
     socket.on("countdown-reset", () => {
@@ -74,6 +75,37 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
       console.error("Error:", error);
     }
   };
+
+  /*const triggerAlert = async (alertDuration: number) => {
+    try {
+      const username = process.env.NGROK_USERNAME as string;
+      const password = process.env.NGROK_PASSWORD as string;
+      const deviceUrl = process.env.DEVICE_URL as string;
+  
+      // Encode credentials in Base64
+      const credentials = btoa(`${username}:${password}`);
+      const authHeader = `Basic ${credentials}`;
+  
+      const response = await fetch(`${deviceUrl}/alert`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Authorization": authHeader
+        },
+        body: `duration=${encodeURIComponent(alertDuration.toString())}`,
+        mode: "cors"
+      });
+  
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+  
+      const responseData = await response.text(); // or response.json() if the server returns JSON
+      console.log("Response data:", responseData);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };*/
 
   return (
     <Box textAlign="center">
