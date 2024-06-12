@@ -1,4 +1,4 @@
-import { Server, Socket } from "socket.io";
+import { Server, Socket } from 'socket.io';
 
 interface CountdownControl {
   stop: () => void;
@@ -10,16 +10,16 @@ export function startCountdown(io: Server, duration: number): CountdownControl {
 
   const stop = () => {
     clearInterval(intervalId);
-    io.emit("countdown-reset");
+    io.emit('countdown-reset');
   };
 
   intervalId = setInterval(() => {
     if (remainingTime <= 0) {
       clearInterval(intervalId);
-      io.emit("countdown-finished");
+      io.emit('countdown-finished');
     } else {
       remainingTime--;
-      io.emit("countdown-update", remainingTime);
+      io.emit('countdown-update', remainingTime);
     }
   }, 1000);
 

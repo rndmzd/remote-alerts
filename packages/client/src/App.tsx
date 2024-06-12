@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Container,
   Typography,
@@ -6,10 +6,10 @@ import {
   Box,
   Grid,
   TextField,
-} from "@mui/material";
-import Countdown from "./Countdown";
-import { io, Socket } from "socket.io-client";
-import { useAuth, AuthProvider } from "./authContext";
+} from '@mui/material';
+import Countdown from './Countdown';
+import { io, Socket } from 'socket.io-client';
+import { useAuth, AuthProvider } from './authContext';
 
 const App: React.FC = () => {
   const {
@@ -24,8 +24,8 @@ const App: React.FC = () => {
   } = useAuth();
   const [isConnected, setIsConnected] = useState(false);
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
 
   const handleConnect = () => {
@@ -54,7 +54,7 @@ const App: React.FC = () => {
     event.preventDefault();
     await register(username, password);
     setIsRegistering(false);
-    setPassword(""); // Clear the password field
+    setPassword(''); // Clear the password field
   };
 
   return (
@@ -63,7 +63,7 @@ const App: React.FC = () => {
         textAlign="center"
         mt={5}
         p={3}
-        sx={{ border: "2px solid black", borderRadius: "8px" }}
+        sx={{ border: '2px solid black', borderRadius: '8px' }}
       >
         <Typography variant="h4" gutterBottom>
           Alert Panel
@@ -80,7 +80,7 @@ const App: React.FC = () => {
                       variant="contained"
                       color="secondary"
                       onClick={handleDisconnect}
-                      sx={{ border: "2px solid black" }}
+                      sx={{ border: '2px solid black' }}
                     >
                       Disarm
                     </Button>
@@ -95,7 +95,7 @@ const App: React.FC = () => {
                     variant="contained"
                     color="primary"
                     onClick={handleConnect}
-                    sx={{ border: "2px solid black" }}
+                    sx={{ border: '2px solid black' }}
                   >
                     Arm
                   </Button>
