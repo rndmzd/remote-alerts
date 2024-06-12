@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Button, Typography, Box, Grid } from "@mui/material";
-import { Socket } from "socket.io-client";
-import { Buffer } from "buffer";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { Button, Typography, Box, Grid } from '@mui/material';
+import { Socket } from 'socket.io-client';
+import axios from 'axios';
 
 interface CountdownProps {
   socket: Socket | null;
@@ -14,37 +13,37 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
   useEffect(() => {
     if (!socket) return;
 
-    socket.on("countdown-update", (time: number) => {
+    socket.on('countdown-update', (time: number) => {
       setTimeRemaining(time);
     });
 
-    socket.on("countdown-finished", () => {
+    socket.on('countdown-finished', () => {
       setTimeRemaining(null);
       triggerAlert(3);
       //alert("Alert triggered!");
     });
 
-    socket.on("countdown-reset", () => {
+    socket.on('countdown-reset', () => {
       setTimeRemaining(null);
     });
 
     return () => {
-      socket.off("countdown-update");
-      socket.off("countdown-finished");
-      socket.off("countdown-reset");
+      socket.off('countdown-update');
+      socket.off('countdown-finished');
+      socket.off('countdown-reset');
     };
   }, [socket]);
 
   const startCountdown = () => {
     if (socket) {
       const duration = 10; // Alert delay countdown in seconds
-      socket.emit("start-countdown", duration);
+      socket.emit('start-countdown', duration);
     }
   };
 
   const stopCountdown = () => {
     if (socket) {
-      socket.emit("stop-countdown");
+      socket.emit('stop-countdown');
     }
   };
 
@@ -58,7 +57,7 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
       });
 
       const response = await axios.post(
-        (process.env.DEVICE_URL as string) + "/alert",
+        (process.env.DEVICE_URL as string) + '/alert',
         params.toString(),
         {
           auth: {
@@ -66,13 +65,13 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
             password: password,
           },
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
         }
       );
-      console.log("Data:", response.data);
+      console.log('Data:', response.data);
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
     }
   };
 
@@ -121,7 +120,7 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
                 variant="contained"
                 color="secondary"
                 onClick={stopCountdown}
-                sx={{ border: "2px solid black" }}
+                sx={{ border: '2px solid black' }}
               >
                 Stop Countdown
               </Button>
@@ -136,7 +135,7 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
               variant="contained"
               color="primary"
               onClick={startCountdown}
-              sx={{ border: "2px solid black" }}
+              sx={{ border: '2px solid black' }}
             >
               Start Countdown
             </Button>

@@ -1,5 +1,5 @@
-import React, { createContext, useState, useContext, ReactNode } from "react";
-import axios from "axios";
+import React, { createContext, useState, useContext, ReactNode } from 'react';
+import axios from 'axios';
 
 interface AuthContextType {
   user: string | null;
@@ -25,7 +25,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const login = async (username: string, password: string) => {
     try {
       const response = await axios.post(
-        process.env.SOCKETIO_HOST + "/api/login",
+        process.env.SOCKETIO_HOST + '/api/login',
         {
           username,
           password,
@@ -36,20 +36,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       setError(null); // Clear any previous errors on successful login
       setSuccessMessage(null); // Clear success message on successful login
     } catch (err: any) {
-      setError(err.response?.data?.message || "Login failed");
+      setError(err.response?.data?.message || 'Login failed');
     }
   };
 
   const register = async (username: string, password: string) => {
     try {
-      await axios.post(process.env.SOCKETIO_HOST + "/api/register", {
+      await axios.post(process.env.SOCKETIO_HOST + '/api/register', {
         username,
         password,
       });
       setError(null); // Clear any previous errors on successful registration
-      setSuccessMessage("User registered successfully. Please log in.");
+      setSuccessMessage('User registered successfully. Please log in.');
     } catch (err: any) {
-      setError(err.response?.data?.message || "Registration failed");
+      setError(err.response?.data?.message || 'Registration failed');
     }
   };
 
@@ -84,7 +84,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 };
