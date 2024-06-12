@@ -31,9 +31,11 @@
     "@types/socket.io": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^7.11.0",
     "@typescript-eslint/parser": "^7.11.0",
+    "@ungap/url-search-params": "^0.2.2",
     "eslint": "^8.57.0",
     "nodemon": "^3.1.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "url": "^0.11.3"
   }
 }
