@@ -9,6 +9,8 @@ interface CountdownProps {
 
 const Countdown: React.FC<CountdownProps> = ({ socket }) => {
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [buttonCountdown, setButtonCountdown] = useState(0);
 
   useEffect(() => {
     if (!socket) return;
@@ -21,10 +23,12 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
       setTimeRemaining(null);
       triggerAlert(3);
       //alert("Alert triggered!");
+      startButtonDelay();
     });
 
     socket.on('countdown-reset', () => {
       setTimeRemaining(null);
+      startButtonDelay();
     });
 
     return () => {
@@ -33,6 +37,15 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
       socket.off('countdown-reset');
     };
   }, [socket]);
+
+  useEffect(() => {
+    if (buttonCountdown > 0) {
+      const timer = setTimeout(() => {
+        setButtonCountdown(buttonCountdown - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [buttonCountdown]);
 
   const startCountdown = () => {
     if (socket) {
@@ -45,6 +58,15 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
     if (socket) {
       socket.emit('stop-countdown');
     }
+  };
+
+  const startButtonDelay = () => {
+    setIsButtonDisabled(true);
+    setButtonCountdown(10);
+    setTimeout(() => {
+      setIsButtonDisabled(false);
+      setButtonCountdown(0);
+    }, 10000); // 10 second delay
   };
 
   const triggerAlert = async (alertDuration: number) => {
@@ -75,37 +97,6 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
     }
   };
 
-  /*const triggerAlert = async (alertDuration: number) => {
-    try {
-      const username = process.env.NGROK_USERNAME as string;
-      const password = process.env.NGROK_PASSWORD as string;
-      const deviceUrl = process.env.DEVICE_URL as string;
-  
-      // Encode credentials in Base64
-      const credentials = btoa(`${username}:${password}`);
-      const authHeader = `Basic ${credentials}`;
-  
-      const response = await fetch(`${deviceUrl}/alert`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "Authorization": authHeader
-        },
-        body: `duration=${encodeURIComponent(alertDuration.toString())}`,
-        mode: "cors"
-      });
-  
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-  
-      const responseData = await response.text(); // or response.json() if the server returns JSON
-      console.log("Response data:", responseData);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };*/
-
   return (
     <Box textAlign="center">
       {timeRemaining !== null ? (
@@ -135,9 +126,10 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
               variant="contained"
               color="primary"
               onClick={startCountdown}
+              disabled={isButtonDisabled}
               sx={{ border: '2px solid black' }}
             >
-              Start Countdown
+              {isButtonDisabled ? `Wait ${buttonCountdown} seconds` : 'Start Countdown'}
             </Button>
           </Grid>
         </Grid>
