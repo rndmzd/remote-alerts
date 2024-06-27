@@ -1,4 +1,3 @@
-
 # Remote Alerts
 
 ## Overview
@@ -6,34 +5,36 @@
 Remote Alerts is a project designed to manage and trigger alerts through a web interface. It includes a countdown timer, basic authentication, and the ability to handle alerts via an ESP32-S3 microcontroller. The project is structured as a monorepo containing a server-side Node.js script, a client-side React frontend, and code for an ESP32-S3 microcontroller.
 
 ## Project Structure
+
 ```markdown
 remote-alerts/
 │
 ├── packages/
-│   ├── server/
-│   │   ├── src/
-│   │   │   ├── index.ts
-│   │   │   └── ... (other server files)
-│   │   ├── package.json
-│   │   └── ... (other server configuration files)
-│   ├── client/
-│   │   ├── src/
-│   │   │   ├── App.tsx
-│   │   │   ├── Countdown.tsx
-│   │   │   ├── index.tsx
-│   │   │   └── ... (other client files)
-│   │   ├── public/
-│   │   │   ├── index.html
-│   │   │   └── ... (other public files)
-│   │   ├── package.json
-│   │   └── ... (other client configuration files)
-│   └── esp32/
-│       ├── device.py
-│       └── ... (other ESP32 files)
+│ ├── server/
+│ │ ├── src/
+│ │ │ ├── index.ts
+│ │ │ └── ... (other server files)
+│ │ ├── package.json
+│ │ └── ... (other server configuration files)
+│ ├── client/
+│ │ ├── src/
+│ │ │ ├── App.tsx
+│ │ │ ├── Countdown.tsx
+│ │ │ ├── index.tsx
+│ │ │ └── ... (other client files)
+│ │ ├── public/
+│ │ │ ├── index.html
+│ │ │ └── ... (other public files)
+│ │ ├── package.json
+│ │ └── ... (other client configuration files)
+│ └── esp32/
+│ ├── device.py
+│ └── ... (other ESP32 files)
 │
 ├── README.md
 └── ... (other root files)
 ```
+
 ## Features
 
 ### Server
@@ -65,16 +66,19 @@ remote-alerts/
 ### Setting Up the Server
 
 1. Navigate to the server directory:
+
    ```bash
    cd remote-alerts/packages/server
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Create `.env` file in the server directory and add environment variables
+
    ```
    CORS_ORIGIN=client_app_url
    JWT_SECRET=jwt_secret_for_user_authentication
@@ -88,16 +92,19 @@ remote-alerts/
 ### Setting Up the Client
 
 1. Navigate to the client directory:
+
    ```bash
    cd remote-alerts/packages/client
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Create `.env` file in the client directory and add environment variables
+
    ```
    SOCKETIO_HOST=socketid_host
    DEVICE_URL=ngrok_agent_url

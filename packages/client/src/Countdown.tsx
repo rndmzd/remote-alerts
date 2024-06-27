@@ -71,24 +71,27 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
 
   const triggerAlert = async (alertDuration: number) => {
     try {
-      const credentials = btoa(`${process.env.NGROK_USERNAME as string}:${process.env.NGROK_PASSWORD as string}`);
+      const credentials = btoa(
+        `${process.env.NGROK_USERNAME as string}:${process.env.NGROK_PASSWORD as string}`
+      );
 
       const params = new URLSearchParams({
         auth: credentials,
-        duration: alertDuration.toString()
+        duration: alertDuration.toString(),
       });
 
       const response = await axios.post(
-        (process.env.DEVICE_URL as string) + "/alert", params.toString(),
+        (process.env.DEVICE_URL as string) + '/alert',
+        params.toString(),
         {
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
         }
       );
-      console.log("Data:", response.data);
+      console.log('Data:', response.data);
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
     }
   };
 
@@ -124,7 +127,9 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
               disabled={isButtonDisabled}
               sx={{ border: '2px solid black' }}
             >
-              {isButtonDisabled ? `Wait ${buttonCountdown} seconds` : 'Start Countdown'}
+              {isButtonDisabled
+                ? `Wait ${buttonCountdown} seconds`
+                : 'Start Countdown'}
             </Button>
           </Grid>
         </Grid>
