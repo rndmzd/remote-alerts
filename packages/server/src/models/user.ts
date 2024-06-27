@@ -30,7 +30,7 @@ User.init(
   {
     sequelize,
     tableName: 'users',
-    timestamps: true
+    timestamps: true,
   }
 );
 

@@ -46,15 +46,21 @@ export const login = [
     try {
       const user = await User.findOne({ where: { username } });
       if (!user) {
-        return res.status(401).json({ message: 'Invalid username or password' });
+        return res
+          .status(401)
+          .json({ message: 'Invalid username or password' });
       }
 
       const isPasswordValid = bcrypt.compareSync(password, user.password);
       if (!isPasswordValid) {
-        return res.status(401).json({ message: 'Invalid username or password' });
+        return res
+          .status(401)
+          .json({ message: 'Invalid username or password' });
       }
 
-      const token = jwt.sign({ username }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
+      const token = jwt.sign({ username }, process.env.JWT_SECRET as string, {
+        expiresIn: '1h',
+      });
       res.json({ token });
     } catch (error) {
       res.status(500).json({ message: 'Internal server error' });
