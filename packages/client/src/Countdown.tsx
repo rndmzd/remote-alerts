@@ -71,29 +71,24 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
 
   const triggerAlert = async (alertDuration: number) => {
     try {
-      const username = process.env.NGROK_USERNAME as string;
-      const password = process.env.NGROK_PASSWORD as string;
+      const credentials = btoa(`${process.env.NGROK_USERNAME as string}:${process.env.NGROK_PASSWORD as string}`);
 
       const params = new URLSearchParams({
-        duration: alertDuration.toString(),
+        auth: credentials,
+        duration: alertDuration.toString()
       });
 
       const response = await axios.post(
-        (process.env.DEVICE_URL as string) + '/alert',
-        params.toString(),
+        (process.env.DEVICE_URL as string) + "/alert", params.toString(),
         {
-          auth: {
-            username: username,
-            password: password,
-          },
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            "Content-Type": "application/x-www-form-urlencoded",
           },
         }
       );
-      console.log('Data:', response.data);
+      console.log("Data:", response.data);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
