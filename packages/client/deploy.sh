@@ -1,14 +1,8 @@
 #!/bin/bash
 
-cd packages/client
-npm i --save-dev
-npm run build
-sudo rm * /var/www/dashboard.rndmzd.com/html/*
-sudo cp dist/* /var/www/dashboard.rndmzd.com/html/
+DEPLOYMENT_URL="/var/www/dashboard.rndmzd.com/html/"
 
-cd ../server
-npm i --save-dev
-npm run build
-screen -x
-exit
-screen -dmS server npm run dev
+npm run build &&
+sudo cp -fv dist/* $DEPLOYMENT_URL &&
+sudo systemctl restart nginx &&
+echo "Deployment successful."
