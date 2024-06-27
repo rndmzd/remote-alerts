@@ -74,13 +74,19 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
       const username = process.env.NGROK_USERNAME as string;
       const password = process.env.NGROK_PASSWORD as string;
 
-      const formData = new FormData();
-      formData.append('username', username)
-      formData.append('password', password)
-      formData.append('duration', alertDuration.toString())
+      //const formData = new FormData();
+      //formData.append('username', username)
+      //formData.append('password', password)
+      //formData.append('duration', alertDuration.toString())
+
+      const params = new URLSearchParams({
+        username: username,
+        password: password,
+        duration: alertDuration.toString()
+      });
 
       const response = await axios.post(
-        (process.env.DEVICE_URL as string) + "/alert", formData,
+        (process.env.DEVICE_URL as string) + "/alert", params.toString(),
         {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -92,7 +98,7 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
       console.error("Error:", error);
     }
   };
-
+  
   return (
     <Box textAlign="center">
       {timeRemaining !== null ? (
