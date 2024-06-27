@@ -2,5 +2,5 @@
 **.env
 **.sqlite
 **dist
-packages/device/config.h
+packages/device/esp8266/config.h
 packages/device/esp32/config.py
