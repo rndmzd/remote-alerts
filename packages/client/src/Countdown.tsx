@@ -71,17 +71,10 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
 
   const triggerAlert = async (alertDuration: number) => {
     try {
-      const username = process.env.NGROK_USERNAME as string;
-      const password = process.env.NGROK_PASSWORD as string;
-
-      //const formData = new FormData();
-      //formData.append('username', username)
-      //formData.append('password', password)
-      //formData.append('duration', alertDuration.toString())
+      const credentials = btoa(`${process.env.NGROK_USERNAME as string}:${process.env.NGROK_PASSWORD as string}`);
 
       const params = new URLSearchParams({
-        username: username,
-        password: password,
+        auth: credentials,
         duration: alertDuration.toString()
       });
 
@@ -98,7 +91,7 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
       console.error("Error:", error);
     }
   };
-  
+
   return (
     <Box textAlign="center">
       {timeRemaining !== null ? (
