@@ -53,6 +53,30 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
       const username = process.env.NGROK_USERNAME as string;
       const password = process.env.NGROK_PASSWORD as string;
 
+      const formData = new FormData();
+      formData.append('username', username)
+      formData.append('password', password)
+      formData.append('duration', alertDuration.toString())
+
+      const response = await axios.post(
+        (process.env.DEVICE_URL as string) + "/alert", formData,
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      console.log("Data:", response.data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  /*const triggerAlert = async (alertDuration: number) => {
+    try {
+      const username = process.env.NGROK_USERNAME as string;
+      const password = process.env.NGROK_PASSWORD as string;
+
       const params = new URLSearchParams({
         duration: alertDuration.toString(),
       });
@@ -76,7 +100,7 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
     }
   };
 
-  /*const triggerAlert = async (alertDuration: number) => {
+  const triggerAlert = async (alertDuration: number) => {
     try {
       const username = process.env.NGROK_USERNAME as string;
       const password = process.env.NGROK_PASSWORD as string;
@@ -90,10 +114,11 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          "Authorization": authHeader
+          //"Authorization": authHeader,
+          //"ngrok-skip-browser-warning": "true"
         },
         body: `duration=${encodeURIComponent(alertDuration.toString())}`,
-        mode: "cors"
+        mode: "no-cors"
       });
   
       if (!response.ok) {
