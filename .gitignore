@@ -4,3 +4,4 @@
 **dist
 packages/device/esp8266/config.h
 packages/device/esp32/config.py
+packages/device/unor4wifi/device/secrets.h

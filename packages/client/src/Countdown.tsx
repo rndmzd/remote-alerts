@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Typography, Box, Grid } from '@mui/material';
+import { Button, Typography, Box, Grid, Switch, FormControlLabel } from '@mui/material';
 import { Socket } from 'socket.io-client';
 import axios from 'axios';
 
@@ -11,6 +11,7 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [buttonCountdown, setButtonCountdown] = useState(0);
+  const [isSprayMode, setIsSprayMode] = useState(false); // Toggle switch state
 
   useEffect(() => {
     if (!socket) return;
@@ -21,8 +22,11 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
 
     socket.on('countdown-finished', () => {
       setTimeRemaining(null);
-      triggerAlert(3);
-      //alert("Alert triggered!");
+      if (isSprayMode) {
+        triggerSpray(true);
+      } else {
+        triggerAlert(3);
+      }
       startButtonDelay();
     });
 
@@ -36,7 +40,7 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
       socket.off('countdown-finished');
       socket.off('countdown-reset');
     };
-  }, [socket]);
+  }, [socket, isSprayMode]);
 
   useEffect(() => {
     if (buttonCountdown > 0) {
@@ -49,7 +53,7 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
 
   const startCountdown = () => {
     if (socket) {
-      const duration = 10; // Alert delay countdown in seconds
+      const duration = 10; // Countdown duration in seconds
       socket.emit('start-countdown', duration);
     }
   };
@@ -81,7 +85,7 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
       });
 
       const response = await axios.post(
-        (process.env.DEVICE_URL as string) + '/alert',
+        `${process.env.DEVICE_URL as string}/alert`,
         params.toString(),
         {
           headers: {
@@ -89,14 +93,53 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
           },
         }
       );
-      console.log('Data:', response.data);
+      console.log('Alert Data:', response.data);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Alert Error:', error);
     }
   };
 
+  const triggerSpray = async (sprayAction: boolean) => {
+    try {
+      const credentials = btoa(
+        `${process.env.NGROK_USERNAME as string}:${process.env.NGROK_PASSWORD as string}`
+      );
+  
+      const params = new URLSearchParams({
+        auth: credentials,
+        sprayAction: sprayAction.toString(),
+      });
+  
+      const response = await axios.post(
+        `${process.env.SPRAY_DEVICE_URL as string}/spray`,
+        params.toString(),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        }
+      );
+  
+      console.log('Spray Data:', response.data);
+    } catch (error) {
+      console.error('Spray Error:', error);
+    }
+  };
+  
+
   return (
     <Box textAlign="center">
+      <FormControlLabel
+        control={
+          <Switch
+            checked={isSprayMode}
+            onChange={(e) => setIsSprayMode(e.target.checked)}
+            color="primary"
+          />
+        }
+        label={isSprayMode ? "Spray Mode" : "Alert Mode"}
+      />
+
       {timeRemaining !== null ? (
         <>
           <Typography variant="h5" gutterBottom>
