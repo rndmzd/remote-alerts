@@ -2,8 +2,8 @@
 #include <Servo.h>
 #include "secrets.h"
 
-#define SERVO_REST_POS 90
-#define SERVO_SPRAY_POS -45
+#define SERVO_REST_POS 70
+#define SERVO_SPRAY_POS 145
 
 int ledPin = LED_BUILTIN;
 int buttonPin = 2;
@@ -89,7 +89,7 @@ void loop() {
         }
 
         // Check to see if the client request was "GET /spray":
-        if (currentLine.endsWith("GET /spray")) {
+        if (currentLine.endsWith("POST /spray")) {
           triggerSpray();
         }
       }
@@ -104,9 +104,10 @@ void loop() {
 }
 
 void triggerSpray() {
+  Serial.println("Spray bottle activated.");
   digitalWrite(ledPin, HIGH);
   sprayServo.write(SERVO_SPRAY_POS);
-  delay(500);
+  delay(1000);
   digitalWrite(ledPin, LOW);
   sprayServo.write(SERVO_REST_POS);
 }
