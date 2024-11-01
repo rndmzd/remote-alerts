@@ -1,5 +1,5 @@
-import React from "react";
-import { GlobalStyles as MuiGlobalStyles } from "@mui/material";
+import React from 'react';
+import { GlobalStyles as MuiGlobalStyles } from '@mui/material';
 
 const GlobalStyles = () => (
   <MuiGlobalStyles
@@ -9,8 +9,8 @@ const GlobalStyles = () => (
         padding: 0,
         fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
       },
-      "*": {
-        boxSizing: "border-box",
+      '*': {
+        boxSizing: 'border-box',
       },
     }}
   />

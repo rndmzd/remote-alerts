@@ -1,39 +1,49 @@
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode: 'development',
+  mode: 'development', // Set the mode to 'development' or 'production'
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: '/',
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js'],
+    fallback: {
+      path: require.resolve('path-browserify'),
+      os: require.resolve('os-browserify'),
+      crypto: require.resolve('crypto-browserify'),
+      fs: false,
+    },
   },
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.(ts|tsx)$/,
         use: 'ts-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-      }
-    ]
-  },
-  resolve: {
-    extensions: ['.tsx', '.ts', '.js']
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
   },
   plugins: [
+    new Dotenv({
+      path: path.resolve(__dirname, '.env'), // Path to your .env file
+    }),
     new HtmlWebpackPlugin({
-      template: './public/index.html'
-    })
+      template: path.resolve(__dirname, 'public', 'index.html'), // Ensure this path is correct
+    }),
   ],
   devServer: {
-    static: {
-      directory: path.join(__dirname, 'dist')
-    },
+    static: path.join(__dirname, 'dist'),
     compress: true,
-    port: 4000
-  }
+    port: 4000,
+    historyApiFallback: true, // Ensure that the dev server serves index.html for all routes
+  },
 };

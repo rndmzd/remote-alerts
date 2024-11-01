@@ -14,11 +14,10 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/material": "^5.15.19",
-    "css-loader": "^7.1.2",
+    "axios": "^1.7.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "socket.io-client": "^4.7.5",
-    "style-loader": "^4.0.0"
+    "socket.io-client": "^4.7.5"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.5",
@@ -29,10 +28,18 @@
     "@types/socket.io-client": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^7.11.0",
     "@typescript-eslint/parser": "^7.11.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "css-loader": "^7.1.2",
+    "dotenv-webpack": "^8.1.0",
     "eslint": "^8.57.0",
     "html-webpack-plugin": "^5.6.0",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "style-loader": "^4.0.0",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.5",
+    "url": "^0.11.3",
     "webpack": "^5.91.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.4"
