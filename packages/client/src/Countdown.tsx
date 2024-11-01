@@ -101,19 +101,24 @@ const Countdown: React.FC<CountdownProps> = ({ socket }) => {
 
   const triggerSpray = async (sprayAction: boolean) => {
     try {
-      const credentials = btoa(`${process.env.NGROK_USERNAME as string}:${process.env.NGROK_PASSWORD as string}`);
+      const credentials = btoa(
+        `${process.env.NGROK_USERNAME as string}:${process.env.NGROK_PASSWORD as string}`
+      );
   
       const params = new URLSearchParams({
         auth: credentials,
         sprayAction: sprayAction.toString(),
       });
   
-      const response = await axios.get(`${process.env.SPRAY_DEVICE_URL as string}/spray`, {
-        params: {
-          auth: credentials,
-          sprayAction: sprayAction.toString(),
-        },
-      });
+      const response = await axios.post(
+        `${process.env.SPRAY_DEVICE_URL as string}/spray`,
+        params.toString(),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        }
+      );
   
       console.log('Spray Data:', response.data);
     } catch (error) {
