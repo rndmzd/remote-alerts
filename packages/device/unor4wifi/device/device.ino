@@ -2,8 +2,13 @@
 #include <Servo.h>
 #include "secrets.h"
 
-#define SERVO_REST_POS 70
-#define SERVO_SPRAY_POS 145
+#define SERVO_REST_POS 30
+#define SERVO_SPRAY_POS 125
+#define SPRAY_HOLD_DURATION 1000
+#define SERVO_SPRITZ_POS 75
+#define SPRITZ_HOLD_DURATION 500
+#define INTERBURST_DELAY 500
+#define SPRITZ_SPRAY_THRESHOLD 1000
 
 int ledPin = LED_BUILTIN;
 int buttonPin = 2;
@@ -91,23 +96,42 @@ void loop() {
         // Check to see if the client request was "GET /spray":
         if (currentLine.endsWith("POST /spray")) {
           triggerSpray();
+        } else if (currentLine.endsWith("POST /burst")) {
+          for (int i = 0; i < 3; i++) {
+            triggerSpray();
+            delay(INTERBURST_DELAY);
+          }
+        } else if (currentLine.endsWith("POST /spritz")) {
+          triggerSpritz();
         }
       }
     }
     client.stop();
     Serial.println("Client disconnected.");
   } else if (digitalRead(buttonPin) == 0) {
+    unsigned long buttonHoldStart = millis();
     while (digitalRead(buttonPin) == 0) delay(5);
-    triggerSpray();
+    unsigned long buttonHoldDuration = millis() - buttonHoldStart;
+    if (buttonHoldDuration < SPRITZ_SPRAY_THRESHOLD) triggerSpritz();
+    else triggerSpray();
   }
   delay(10);
 }
 
 void triggerSpray() {
-  Serial.println("Spray bottle activated.");
+  Serial.println("Spray triggered.");
   digitalWrite(ledPin, HIGH);
   sprayServo.write(SERVO_SPRAY_POS);
-  delay(1000);
+  delay(SPRAY_HOLD_DURATION);
+  digitalWrite(ledPin, LOW);
+  sprayServo.write(SERVO_REST_POS);
+}
+
+void triggerSpritz() {
+  Serial.println("Spritz triggered.");
+  digitalWrite(ledPin, HIGH);
+  sprayServo.write(SERVO_SPRITZ_POS);
+  delay(SPRITZ_HOLD_DURATION);
   digitalWrite(ledPin, LOW);
   sprayServo.write(SERVO_REST_POS);
 }
